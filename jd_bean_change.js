@@ -1019,7 +1019,7 @@ async function bean() {
 	do {
 		let response = await getJingBeanBalanceDetail(page);
 		await $.wait(1000);
-		//console.log(`第${page}页: ${JSON.stringify(response)}`);
+		// console.log(`第${page}页: ${JSON.stringify(response)}`);
 		if (response && response.code === "0") {
 			page++;
 			let detailList = response.detailList;
@@ -1038,7 +1038,7 @@ async function bean() {
 					}
 				}
 			} else {
-				$.errorMsg = `数据异常1`;
+				$.errorMsg = `数据异常`;
 				$.msg($.name, ``, `账号${$.index}：${$.nickName}\n${$.errorMsg}`);
 				t = 1;
 			}
@@ -1114,7 +1114,7 @@ async function Monthbean() {
 	do {
 		let response = await getJingBeanBalanceDetail(allpage);
 		await $.wait(1000);
-		console.log(`第${allpage}页: ${JSON.stringify(response)}`);
+		// console.log(`第${allpage}页: ${JSON.stringify(response)}`);
 		if (response && response.code === "0") {
 			allpage++;
 			let detailList = response.detailList;
@@ -1131,7 +1131,7 @@ async function Monthbean() {
 					}
 				}
 			} else {
-				$.errorMsg = `数据异常2`;
+				$.errorMsg = `数据异常`;
 				$.msg($.name, ``, `账号${$.index}：${$.nickName}\n${$.errorMsg}`);
 				allt = 1;
 			}
@@ -1305,7 +1305,7 @@ function TotalBean() {
 							if ($.beanCount == 0)
 								$.beanCount = data.data && data.data['assetInfo']['beanNum'];
 						} else {
-							$.errorMsg = `数据异常3`;
+							$.errorMsg = `数据异常`;
 						}
 					} else {
 						$.log('京东服务器返回空数据,将无法获取等级及VIP信息');
@@ -2409,8 +2409,6 @@ function taskJxUrl(functionId, body = '') {
 function GetJxBeanDetailData() {
   return new Promise((resolve) => {
     $.get(taskJxUrl("queryuserjingdoudetail","pagesize=10&type=16"), async (err, resp, data) => {
-
-		console.log(`***: ${JSON.stringify(data)}`);
         try {
           if (err) {
             console.log(JSON.stringify(err));
@@ -2466,10 +2464,8 @@ async function jxbean() {
     var JxYesterdayArr = [],
     JxTodayArr = [];
     var JxResponse = await GetJxBeanDetailData();
-	console.log(`---: ${JSON.stringify(JxResponse)}`);
     if (JxResponse && JxResponse.ret == "0") {
         var Jxdetail = JxResponse.detail;
-		console.log(`111: ${JSON.stringify(Jxdetail)}`);
         if (Jxdetail && Jxdetail.length > 0) {
             for (let item of Jxdetail) {
                 const date = item.createdate.replace(/-/g, '/') + "+08:00";
@@ -2483,7 +2479,7 @@ async function jxbean() {
                 }
             }
         } else {
-            $.errorMsg = `数据异常4`;
+            $.errorMsg = `数据异常`;
             $.msg($.name, ``, `账号${$.index}：${$.nickName}\n${$.errorMsg}`);
         }
 
