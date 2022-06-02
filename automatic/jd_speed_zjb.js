@@ -8,6 +8,8 @@ export InviterPin="9vOskAagcMJ4EOWXPQSS9A%3D%3D" ##你的邀请码
 
 [task_local]
 #柠檬赚金币
+cron:20 0 * * * 
+
 20 0 * * * jd_zjb.js, tag=柠檬赚金币, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
 const $ = new Env('极速版赚金币邀请');
