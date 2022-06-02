@@ -6,7 +6,7 @@
 ============Quantumultx===============
 [task_local]
 #签到领现金
-cron:0 15 9 1-31/7 * 
+cron:15 9 1-31/7 * * 
 
 11 0,20 * * * jd_js_cash.js, tag=签到领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
