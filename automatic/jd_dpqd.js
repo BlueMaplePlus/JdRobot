@@ -12,10 +12,8 @@ cron "15 2,14 * * *" script-path=https://raw.githubusercontent.com/shufflewzc/fa
 ===========小火箭========
 店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/shufflewzc/faker2/main/jd_shop_sign.jss, cronexpr="15 2,14 * * *", timeout=3600, enable=true
 
-
 环境变量:
 DPQDTK: token1&token2
-仓库不再提供token
 
 */
 
