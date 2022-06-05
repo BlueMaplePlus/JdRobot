@@ -146,6 +146,7 @@ function getvenderId(token) {
     }
     $.get(options, (err, resp, data) => {
       try {
+        console.log(`${JSON.stringify(data)}`)
         if (err) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
