@@ -48,6 +48,7 @@ if (!token.length) {
   ]
 }
 console.log(token)
+
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
