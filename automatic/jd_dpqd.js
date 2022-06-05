@@ -203,7 +203,7 @@ function getvenderName(venderId) {
     })
   })
 }
-
+ 
 
 //获取店铺活动信息
 function getActivityInfo(token, venderId) {
