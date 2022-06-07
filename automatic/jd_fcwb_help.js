@@ -5,6 +5,7 @@
 定时自己按需设置，默认不运行
 40 10 10 5 * https://github.com/6dylan6/jdpro/jd_fcwb_help.js
 
+[task_local]
 40 6,17 * * *  jd_speed_signfree.js 签到免单
 
 */
