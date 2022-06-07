@@ -5,6 +5,7 @@
 定时自己按需设置，默认不运行
 40 6,17 * * * https://github.com/6dylan6/jdpro/jd_fcwb_help.js
 
+40 6,17 * * *  jd_speed_signfree.js 签到免单
 
 */
 const $ = new Env('发财挖宝助力');
