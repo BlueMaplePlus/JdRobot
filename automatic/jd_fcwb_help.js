@@ -5,6 +5,8 @@
 定时自己按需设置，默认不运行
 40 10 10 5 * https://github.com/6dylan6/jdpro/jd_fcwb_help.js
 
+cron "40 6,17 * * *" 
+
 */
 const $ = new Env('发财挖宝助力');
 const notify=$.isNode()?require('./sendNotify'):'';
