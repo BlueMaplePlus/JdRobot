@@ -90,7 +90,7 @@ def get_duplicate_list(tasklist: list) -> tuple:
     names = []
     cmds = []
     for task in tasklist:
-        ids.append(task.get("id"))
+        ids.append(task.get("_id"))
         names.append(task.get("name"))
         cmds.append(task.get("command"))
 
@@ -100,44 +100,44 @@ def get_duplicate_list(tasklist: list) -> tuple:
             name_list.append(name)
 
     tem_tasks = []
-    temids = []
-    dupids = []
+    tem_ids = []
+    dup_ids = []
     for name2 in name_list:
         name_index = get_index(names, name2)
         for i in range(len(name_index)):
             if i == 0:
                 logger.info(f"【✅保留】{cmds[name_index[0]]}")
                 tem_tasks.append(tasklist[name_index[0]])
-                temids.append(ids[name_index[0]])
+                tem_ids.append(ids[name_index[0]])
             else:
                 logger.info(f"【🚫禁用】{cmds[name_index[i]]}")
-                dupids.append(ids[name_index[i]])
+                dup_ids.append(ids[name_index[i]])
         logger.info("")
 
     logger.info("=== 第一轮初筛结束 ===")
 
-    return temids, tem_tasks, dupids
+    return tem_ids, tem_tasks, dup_ids
 
 
 def reserve_task_only(
-    temids: list, tem_tasks: list, dupids: list, res_list: list
+    tem_ids: list, tem_tasks: list, dup_ids: list, res_list: list
 ) -> list:
-    if len(temids) == 0:
-        return temids
+    if len(tem_ids) == 0:
+        return tem_ids
 
     logger.info("\n=== 最终筛选开始 ===")
     task3 = None
     for task1 in tem_tasks:
         for task2 in res_list:
             if task1.get("name") == task2.get("name"):
-                dupids.append(task1.get("id"))
+                dup_ids.append(task1.get("_id"))
                 logger.info(f"【✅保留】{task2.get('command')}")
                 task3 = task1
         if task3:
             logger.info(f"【🚫禁用】{task3.get('command')}\n")
             task3 = None
     logger.info("=== 最终筛选结束 ===")
-    return dupids
+    return dup_ids
 
 
 def disable_duplicate_tasks(ids: list) -> None:
@@ -155,9 +155,6 @@ def disable_duplicate_tasks(ids: list) -> None:
 
 def get_token() -> str or None:
     try:
-        with open("/ql/data/config/auth.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except FileNotFoundError:
         with open("/ql/config/auth.json", "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception:
@@ -182,12 +179,12 @@ if __name__ == "__main__":
         exit(1)
     filter_list, res_list = filter_res_sub(tasklist)
 
-    temids, tem_tasks, dupids = get_duplicate_list(filter_list)
+    tem_ids, tem_tasks, dup_ids = get_duplicate_list(filter_list)
     # 是否在重复任务中只保留设置的前缀
     if res_only:
-        ids = reserve_task_only(temids, tem_tasks, dupids, res_list)
+        ids = reserve_task_only(tem_ids, tem_tasks, dup_ids, res_list)
     else:
-        ids = dupids
+        ids = dup_ids
         logger.info("你选择保留除了设置的前缀以外的其他任务")
 
     sum = f"所有任务数量为：{len(tasklist)}"
