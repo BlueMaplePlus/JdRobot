@@ -67,44 +67,44 @@ message = ""
     // }
     cookie = cookiesArr[i];
     if (cookie) {
-        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-        $.index = i + 1;
-        $.isLogin = true;
-        $.nickName = '';
-        $.maxJoyCount = 10;
-		$.UA = `jdapp;iPhone;10.1.4;13.1.2;${randomString(40)};network/wifi;model/iPhone8,1;addressid/2308460611;appBuild/167814;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+      $.index = i + 1;
+      $.isLogin = true;
+      $.nickName = '';
+      $.maxJoyCount = 10;
+      $.UA = `jdapp;iPhone;10.1.4;13.1.2;${randomString(40)};network/wifi;model/iPhone8,1;addressid/2308460611;appBuild/167814;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
 
-            await TotalBean();
-        if (!$.isLogin) {
-            $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {
-                "open-url": "https://bean.m.jd.com/bean/signIndex.action"
-            });
+      await TotalBean();
+      if (!$.isLogin) {
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {
+          "open-url": "https://bean.m.jd.com/bean/signIndex.action"
+        });
 
-            if ($.isNode()) {
-                await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-            }
-            continue
+        if ($.isNode()) {
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
         }
-        console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+        continue
+      }
+      console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
 
     }
-      //下地后还有有钱买Joy并且买了Joy
-      $.hasJoyCoin = true
-      await getJoyBaseInfo(undefined, undefined, undefined, true);
-      $.activityJoyList = []
-      $.workJoyInfoList = []
-      await getJoyList(true);
-      await getGameShopList()
-      //清理工位
-      await doJoyMoveDownAll($.workJoyInfoList)
-      //从低合到高
-	  try{	  
-		  await doJoyMergeAll($.activityJoyList)
-		  await getGameMyPrize()
-	  } catch (e) {
-        $.logErr(e)
-      }
-	  await $.wait(1500)
+    //下地后还有有钱买Joy并且买了Joy
+    $.hasJoyCoin = true
+    await getJoyBaseInfo(undefined, undefined, undefined, true);
+    $.activityJoyList = []
+    $.workJoyInfoList = []
+    await getJoyList(true);
+    await getGameShopList()
+    //清理工位
+    await doJoyMoveDownAll($.workJoyInfoList)
+    //从低合到高
+    try {
+      await doJoyMergeAll($.activityJoyList)
+      await getGameMyPrize()
+    } catch (e) {
+      $.logErr(e)
+    }
+    await $.wait(1500)
   }
 })()
   .catch((e) => $.logErr(e))
@@ -153,7 +153,7 @@ function getJoyList(printLog = false) {
           if (printLog) {
             $.log(`\n===== 【京东账号${$.index}】${$.nickName || $.UserName} joy 状态 start =====`)
             $.log("在逛街的joy⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️")
-			
+
             for (let i = 0; i < data.data.activityJoyList.length; i++) {
               //$.wait(50);
               $.log(`id:${data.data.activityJoyList[i].id}|name: ${data.data.activityJoyList[i].name}|level: ${data.data.activityJoyList[i].level}`);
@@ -272,24 +272,24 @@ async function doJoyMergeAll(activityJoyList) {
   let joyMinLevelArr = activityJoyList.filter(row => row.level === minLevel);
   let joyBaseInfo = await getJoyBaseInfo();
   await $.wait(2000)
-  if(!joyBaseInfo.fastBuyLevel){
-	  await $.wait(5000)
-	  joyBaseInfo = await getJoyBaseInfo();
+  if (!joyBaseInfo.fastBuyLevel) {
+    await $.wait(5000)
+    joyBaseInfo = await getJoyBaseInfo();
   }
-  if(!joyBaseInfo.fastBuyLevel){
-	   $.log(`出错，下地后跳出......`)
-	  await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList);	  
-	  return false;
+  if (!joyBaseInfo.fastBuyLevel) {
+    $.log(`出错，下地后跳出......`)
+    await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList);
+    return false;
   }
-  
+
   let fastBuyLevel = joyBaseInfo.fastBuyLevel
   if (joyMinLevelArr.length >= 2) {
     $.log(`开始合成 ${minLevel} ${joyMinLevelArr[0].id} <=> ${joyMinLevelArr[1].id} 【限流严重，5秒后合成！如失败会重试】`);
     await $.wait(5000)
     await doJoyMerge(joyMinLevelArr[0].id, joyMinLevelArr[1].id);
-	if (hotFlag) {
-	  joyBaseInfo = await getJoyBaseInfo();
-	  await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList);
+    if (hotFlag) {
+      joyBaseInfo = await getJoyBaseInfo();
+      await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList);
       return false;
     }
     await getJoyList()
